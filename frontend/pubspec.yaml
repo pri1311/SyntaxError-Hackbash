@@ -32,6 +32,11 @@ dependencies:
   pedometer: ^2.1.0
   url_launcher: ^5.7.9
   expansion_card: ^0.1.0
+  camera: ^0.5.8+2
+  esys_flutter_share: ^1.0.2
+  path: ^1.6.4
+  path_provider: ^1.6.11
+  http: ^0.13.0
 
 dev_dependencies:
   flutter_test:
