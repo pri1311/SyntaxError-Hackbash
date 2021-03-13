@@ -19,7 +19,7 @@ global sess
 sess = tf.compat.v1.Session()
 tf.compat.v1.keras.backend.set_session(sess)
 global model
-model = load_model('GarbageClassifier_Xce.h5')
+model = load_model(r'app/GarbageClassifier_Xce.h5')
 global graph
 graph = tf.compat.v1.get_default_graph()
 
