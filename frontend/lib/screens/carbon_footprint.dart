@@ -233,12 +233,7 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                     size: 0.028 * constraints.maxHeight,
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              suggestionScreen(),
-                                        ));
+                                    //TODO navigate to suggestions
                                   },
                                 ),
                               ),
@@ -377,7 +372,7 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                       "kgs/month", saveValue),
                                   inputWidgets("Eggs", food["Eggs"], food,
                                       "kgs/month", saveValue),
-                                  inputWidgets("Potatoes", food["Potatoes"],
+                                  inputWidgets("Potatoes", food["Potates"],
                                       food, "kgs/month", saveValue),
                                   inputWidgets("Rice", food["Rice"], food,
                                       "kgs/month", saveValue),
@@ -433,11 +428,11 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                 children: [
                                   inputWidgets("Diesel", travel["Diesel"], food,
                                       "litres/mo", saveValue),
-                                  inputWidgets("Petrol", travel["Petrol"], food,
+                                  inputWidgets("Petrol", food["Petrol"], food,
                                       "litres/mo", saveValue),
-                                  inputWidgets("LPG", travel["LPG"], food,
+                                  inputWidgets("LPG", food["LPG"], food,
                                       "litres/mo", saveValue),
-                                  inputWidgets("CNG", travel["CNG"], food,
+                                  inputWidgets("CNG", food["CNG"], food,
                                       "litres/mo", saveValue),
                                 ],
                               )
@@ -507,10 +502,18 @@ class inputWidgets extends StatefulWidget {
       this.object, this.value, this.inputList, this.unit, this.saveValue);
 
   @override
-  _inputWidgetsState createState() => _inputWidgetsState();
+  _inputWidgetsState createState() =>
+      _inputWidgetsState(object, value, inputList, unit, saveValue);
 }
 
 class _inputWidgetsState extends State<inputWidgets> {
+  String object;
+  double value;
+  String unit;
+  Map<String, dynamic> inputList;
+  Function saveValue;
+  _inputWidgetsState(
+      this.object, this.value, this.inputList, this.unit, this.saveValue);
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -523,7 +526,7 @@ class _inputWidgetsState extends State<inputWidgets> {
           Expanded(
             flex: 4,
             child: Text(
-              widget.object,
+              object,
               style: TextStyle(
                 fontSize: 0.04 * width,
               ),
@@ -536,16 +539,13 @@ class _inputWidgetsState extends State<inputWidgets> {
               child: Row(
                 children: [
                   Flexible(
-                    child: TextFormField(
-                      initialValue: widget.value.toStringAsFixed(2),
+                    child: TextField(
                       keyboardType: TextInputType.number,
                       onChanged: (text) {
                         if (text == "")
-                          widget.saveValue(
-                              widget.inputList, widget.object, "0");
+                          saveValue(inputList, object, "0");
                         else
-                          widget.saveValue(
-                              widget.inputList, widget.object, text);
+                          saveValue(inputList, object, text);
                       },
                     ),
                   ),
@@ -558,7 +558,7 @@ class _inputWidgetsState extends State<inputWidgets> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                widget.unit,
+                unit,
                 style: TextStyle(
                   fontSize: 0.04 * width,
                 ),
