@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class BottomDrawerScreen extends StatefulWidget {
+  static double pmiValue;
+  static double co2;
+  static int stepValue;   //TODO get values from step screen
+  static int netDeedValue;
+
+
   @override
   _BottomDrawerScreenState createState() => _BottomDrawerScreenState();
 }
 
 class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
-  //TODO get values from backend
-  double treesValue = 9;
-  double co2 = 5;
-  double stepValue = 1000;
-  double deedsValue = 3;
 
-  int deeds = 15;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,8 +47,8 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                       // crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Stats(
-                          statValue: treesValue,
-                          stat: "Trees",
+                          statValue: BottomDrawerScreen.pmiValue.toDouble(),
+                          stat: "kg PMI",
                           constraints: constraints,
                         ),
                         Container(
@@ -54,7 +57,7 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                           height: 0.0737 * constraints.maxHeight,
                         ),
                         Stats(
-                          statValue: stepValue,
+                          statValue: BottomDrawerScreen.stepValue.toDouble(),
                           stat: "Steps",
                           constraints: constraints,
                         ),
@@ -64,8 +67,8 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                           height: 0.0737 * constraints.maxHeight,
                         ),
                         Stats(
-                          statValue: co2,
-                          stat: "Tonns CO2",
+                          statValue: BottomDrawerScreen.co2,
+                          stat: "Kg CO₂",
                           constraints: constraints,
                         ),
                         Container(
@@ -74,8 +77,8 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                           height: 0.0737 * constraints.maxHeight,
                         ),
                         Stats(
-                          statValue: deedsValue,
-                          stat: "Good deed",
+                          statValue: BottomDrawerScreen.netDeedValue.toDouble(),
+                          stat: "Good deeds",
                           constraints: constraints,
                         ),
                       ],
@@ -95,7 +98,7 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                       ),
                     ),
                     Wrap(
-                      children: drawBadges(deeds, constraints),
+                      children: drawBadges(BottomDrawerScreen.netDeedValue, constraints),
                     ),
                   ],
                 ),
@@ -136,7 +139,7 @@ class Stats extends StatelessWidget {
                 left: 0.015 * constraints.maxWidth,
                 right: 0.015 * constraints.maxWidth),
             child: Text(
-              statValue.toString(),
+              statValue.toStringAsFixed(2),
               style: TextStyle(
                   fontSize: 0.048 * constraints.maxWidth,
                   color: Colors.white,

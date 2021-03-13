@@ -6,13 +6,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScreen extends StatefulWidget {
+
+  static int status;
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
+  SharedPreferences prefs;
+  bool _seen;
+
+  void checkFirstSeen() async {
+
+    prefs = await SharedPreferences.getInstance();
+    // _seen = (prefs.getBool('seen') ?? true);
+    _seen = MainScreen.status==0 ? true : false;
+
+    if (_seen == true) {
+      _showDeedDialog();
+    }
+  }
   String input = "";
   List<String> news = ["", "", ""];
   @override
@@ -25,15 +42,27 @@ class _MainScreenState extends State<MainScreen> {
     news[2] =
     'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
     //TODO initialise 3 news statements (only title)
-
+    checkFirstSeen();
     super.initState();
   }
 
-  int deedNo = 0;
   String newsBody =
       "The Union Environment Ministry and the Delhi government jointly launched 'Clean Air Campaign' which saw 4,347 violations in a week, officials said on Monday. The officials added that 1,892 violators were fined, leading to a collection of ₹54 crore. The campaign was launched on February 10 to find a permanent solution to pollution in Delhi-NCR.";
 
+  Future<void> readValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    BottomDrawerScreen.netDeedValue = prefs.getInt('deed_value') ?? 0;
+    BottomDrawerScreen.pmiValue = prefs.getDouble('pmi')??0.0;
+    BottomDrawerScreen.co2 = prefs.getDouble('carbon_footprint')??0.0;
+    BottomDrawerScreen.stepValue = prefs.getInt('step_value')??0;
+  }
+
   Future<void> _showDeedDialog() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    int deedNo = prefs.getInt('deed_number') ?? 0;
+    int netDeedValue = prefs.getInt('deed_value') ?? 0;
+
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -96,8 +125,14 @@ class _MainScreenState extends State<MainScreen> {
                                 fontSize: constraint.maxHeight * 0.0251,
                                 color: Colors.white),
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            netDeedValue++;
+                            prefs.setInt('deed_value', netDeedValue);
                             deedNo = (deedNo + 1) % deeds.length;
+                            prefs.setInt('deed_number', deedNo);
+                            _seen=false;
+                            prefs.setBool("seen", _seen) ;
+                            MainScreen.status=1;
                             Navigator.pop(context);
                           },
                         )
@@ -293,7 +328,8 @@ class _MainScreenState extends State<MainScreen> {
                       padding: const EdgeInsets.all(4.0),
                       child: IconButton(
                         icon: Icon(Icons.format_list_bulleted),
-                        onPressed: () {
+                        onPressed: () async {
+                          readValues();
                           showModalBottomSheet(
                               context: context,
                               builder: (BuildContext context) =>
