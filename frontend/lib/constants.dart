@@ -87,3 +87,81 @@ const List<List<String>> materials = [
     "Learn how you can make small changes that are eco-friendly and will have a lasting effect. \n\n1. Use a reusable bottle/cup for beverages on-the-go \nYou might already have a reusable water bottle, but do you use it all the time? You can put that reusable bottle to use, save money, and reduce waste. By taking your own water with you, you’ll also reduce your chances of purchasing more expensive beverages on-the-go. This will eliminate the one-time-use containers they come in. \n\n2. Use reusable grocery bags, and not just for groceries \nJust like a reusable water bottle, you may already have a reusable grocery bag, though it’s often forgotten at home. Try writing BAGS on the top of your grocery list to help you remember, or keep them in the back seat where they aren’t as easy to forget.  \n\n3. Purchase wisely and recycle \nYou can reduce the amount of waste you produce by purchasing products that come with less packaging and/or come in packaging that can be recycled. Not all plastics are recyclable in Delaware, so check labels before your buy. \n\n4. Compost it! \nDid you know as much as 25% of the items in your trash could potentially be removed from the waste stream and composted in your back yard? Your fruit and vegetable scraps, eggshells, coffee grounds, grass clippings, and leaves can all be composted.  \n\n5. Avoid single-use food and drink containers and utensils \nWhenever possible, try to avoid single-use coffee cups, disposable utensils, straws and napkins. Some businesses will even give you a discount on your coffee for bringing your own mug. Keep a set of silverware at work along with a plate, bowl and cup that you can wash and reuse."
   ]
 ];
+
+const List<List<String>> suggestions = [
+  [
+    "Switch to having a bucket bath",
+    "By eliminating the use of showers and switching to a bucket bath, one can save 30 litres per bath and if we were to calculate that for a building of 30 flats, it would be 13 lakh litres on an annual basis, which is equivalent to planting 10 trees."
+  ],
+  [
+    "Set AC from 24 – 26ºC with a fan ",
+    "This would help save 12 per cent on AC power and approximately Rs 2, 500 for an AC that has been used for eight hours/day for six months. If followed by a building of 30 houses, this is equivalent to planting 45 trees."
+  ],
+  [
+    "Set geyser thermostat settings to 500c ",
+    "By doing this consciously, 29 per cent of geyser power is saved, which is equivalent to savings worth Rs 1, 83, 000 per year for a building of 30 houses, or planting 102 trees!"
+  ],
+  [
+    "Install motion sensors for staircase lights",
+    "Installing 20 tubelights in a building controlled by motion sensors will help save close to Rs 21, 000 each year or equate to planting 12 trees per year per building."
+  ],
+  [
+    "Compost your home waste",
+    "Using a home-composting system in earthen pots can avoid a building’s meaningless contribution of 22 tonnes of waste, which would end up in a landfill. This is equivalent to planting 29 trees per building per year."
+  ],
+  [
+    "Reduce meat intake",
+    "By avoiding three meat-based meals in a week, an individual is helping what is equal to planting one tree per year."
+  ],
+  [
+    "Reduce flying short-distances",
+    "Avoiding four domestic flights and taking an AC train instead for shorter distances is equivalent to planting two trees per person per year."
+  ],
+  [
+    "Walk",
+    "As a family of four, if you walk 1.5 trips, twice a week, it is equal to planting four trees per year."
+  ]
+];
+
+const List<List<String>> pmisuggestions = [
+  [
+    "Fix your caffeine fix",
+    "Carry a reusable coffee cup or flask. Around 2.5bn coffee cups are thrown away every year in many countries – that’s seven million a day! Less than 1% of these can be recycled, meaning most spend up to 50 years in landfill, after lasting just minutes in your hand. Lots of coffee outlets offer a discount when you use your own cup and there are many eco-friendly options out there."
+  ],
+  [
+    "Bring your own bottle ",
+    "Plastic bottles are one of the most frequently found items on beach cleans globally. The lids commonly end up in seabirds’ stomachs."
+  ],
+  [
+    "Say no to plastic cutlery ",
+    "By carrying a spork, reusing your plastic cutlery or going for a compostable alternative, you could personally save 466 items of unnecessary plastic every year. It’s thought that we use plastic cutlery for just 3 minutes before throwing it away!"
+  ],
+  [
+    "Straws suck",
+    "Straws are sucking the life out of our oceans. But there is an easy fix to this one, if you don’t need one, don’t use one. Plastic straws and stirrers can take up to 200 years to decompose. Opt for paper straws or ditch them altogether and try the age-old sipping technique. Is it really worth taking a plastic straw with your Strawberry Daiquiri when the straw could remain in landfill long after your 100th birthday?"
+  ],
+  [
+    "Ditch the cling wrap",
+    "Unlike cling film that cannot be recycled, foil is recyclable. So if you are using foil, make sure you put it in the recycling bin after use! Another alternative is the new Beeswax Wraps. Made using 100% cotton, Pine Resin, Jojoba Oil and local Beeswax they are 100% natural and environmentally friendly. This means no nasties will leach into your food whilst it’s stored, they’re reusable and compostable. Plus, they come in fun patterns!"
+  ],
+  [
+    "Teabags",
+    "Use loose leaf tea with a tea strainer instead of teabags that are sealed with plastic. Or give plastic free tea Pukka Tea and Teapigs a go! Disposing of teabags ultimately leads to microplastics entering our waterways and eventually our food chain. Things are changing, though: PG tips are bringing in biodegradable teabags this month, and we hope other brands will soon follow."
+  ],
+  [
+    "Give up gum",
+    "Britons are the second biggest consumers of gum in the world, chewing an estimated 130 sticks per person each year. Chewing gum (made from plastic itself) can be swapped for plastic free alternatives such as Glee or Chewsy!"
+  ],
+  [
+    "Glitter, the one member of the party that NEVER leaves!",
+    "Glitter is made from plastic of such a small size it’s especially lethal to our oceans. This microplastic can eventually end up in our food chain as plankton and shellfish can ingest it. But don’t worry, you can still sparkle guilt-free! There are many ranges of eco-friendly, biodegradable glitter out there."
+  ],
+  [
+    "Bring back the milkman",
+    "Consider getting your milk delivered in glass bottles which are reused and recycled instead of your usual plastic pint. Many milkrounds also offer fruit juices too. Join the 4% of the British population who still get their milk delivered!"
+  ],
+  [
+    "Become a wine bottle sommelier",
+    "What’s more satisfying, popping a cork or the modern screw top? Choose wine bottles with natural cork stoppers instead of plastic stoppers or metal screw caps (which contain BPA, an industrial chemical used to make certain plastics). Visit recork.org to explore the range of wines using cork stoppers."
+  ],
+];
