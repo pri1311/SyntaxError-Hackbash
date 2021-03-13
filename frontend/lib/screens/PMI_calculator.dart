@@ -59,7 +59,7 @@ class _PMI_calculatorState extends State<PMI_calculator> {
 
   void incrementValues(value, inputList) {
     setState(() {
-      if (inputList[value].double() >= 0) {
+      if (inputList[value] >= 0) {
         inputList[value] = inputList[value] + 1;
         calculatePMI();
         saveMaps();
