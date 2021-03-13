@@ -46,14 +46,14 @@ class _carbonFootprintState extends State<carbonFootprint> {
 
   double carbon_footprint = 0;
 
-  Function saveValue(inputList, key, value) {
+  void saveValue(inputList, key, value) {
     setState(() {
       inputList[key] = double.parse(value);
       calculateCF();
     });
   }
 
-  Function calculateCF() {
+  void calculateCF() {
     setState(() {
       carbon_footprint = household["Electricity"] * 0.35 +
           household["Natural Gas"] * 6.6 +
@@ -133,7 +133,7 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Text(
-                                      carbon_footprint.toStringAsFixed(3),
+                                      carbon_footprint <=9999?carbon_footprint.toStringAsFixed(3) :"9999",
                                       style: TextStyle(
                                         fontSize: 0.07 * width,
                                         color: Colors.white,
@@ -462,8 +462,12 @@ class inputWidgets extends StatelessWidget {
                     children: [
                       Flexible(
                         child: TextField(
+                          keyboardType: TextInputType.number,
                           onChanged: (text) {
-                            saveValue(inputList, object, text);
+                            if(text=="")
+                              saveValue(inputList, object, "0");
+                            else
+                              saveValue(inputList, object, text);
                           },
                         ),
                       ),

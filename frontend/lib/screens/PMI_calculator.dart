@@ -32,7 +32,7 @@ class _PMI_calculatorState extends State<PMI_calculator> {
 
   double pmi = 0;
 
-  Function incrementValues(value, inputList) {
+  void incrementValues(value, inputList) {
     setState(() {
       if (inputList[value] >= 0) {
         inputList[value] = inputList[value] + 1;
@@ -41,7 +41,7 @@ class _PMI_calculatorState extends State<PMI_calculator> {
     });
   }
 
-  Function decrementValues(value, inputList) {
+  void decrementValues(value, inputList) {
     setState(() {
       if (inputList[value] > 0) {
         inputList[value] = inputList[value] - 1;
@@ -50,7 +50,7 @@ class _PMI_calculatorState extends State<PMI_calculator> {
     });
   }
 
-  Function calculatePMI() {
+  void calculatePMI() {
     setState(() {
       pmi = FoodandKitchen["Plastic Bags"] * (0.4 / 52) +
           FoodandKitchen["Softdrink Bottles"] * (1.9 / 52) +
