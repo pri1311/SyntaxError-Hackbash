@@ -18,11 +18,12 @@ the environment become the serene place we envisage.
 ![mockup1](https://user-images.githubusercontent.com/64562764/111024196-5291fe80-8403-11eb-9754-92f12d5dab34.PNG)
 
 # Mock ups
-![mock ups](https://user-images.githubusercontent.com/64562764/111029334-32256c80-8422-11eb-9dd5-b37c89ddfdab.PNG)
+![mock ups](https://user-images.githubusercontent.com/64562764/111040592-a29bb000-8459-11eb-963c-46284b9d75ca.PNG)
 
 # Work-flow
 ![To do Board1](https://user-images.githubusercontent.com/64562764/111024110-de575b00-8402-11eb-8023-f7a62b90ce11.jpg)
-![To do Board2](https://user-images.githubusercontent.com/64562764/111024114-df888800-8402-11eb-8854-d791cfb7516f.jpg)
+![To do - Frame 3 (3)](https://user-images.githubusercontent.com/64562764/111040567-7c761000-8459-11eb-94b0-50cebac90d88.jpg)
+
 
 # Tech Stack
 
