@@ -1,8 +1,10 @@
 import 'package:earthling/screens/PMI_calculator.dart';
+import 'package:earthling/screens/analysis_screen.dart';
 import 'package:earthling/screens/carbon_footprint.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 
 class MainScreen extends StatefulWidget {
@@ -17,11 +19,11 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     news[0] =
-        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
+    'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
     news[1] =
-        'Supreme Court asks Centre why environment regulator has not been set up';
+    'Supreme Court asks Centre why environment regulator has not been set up';
     news[2] =
-        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
+    'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
     //TODO initialise 3 news statements (only title)
 
     super.initState();
@@ -38,73 +40,227 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context) {
         return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraint) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-            shape:
+              return AlertDialog(
+                contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            title: Padding(
-              padding: EdgeInsets.all(20),
-              child: Image(
-                image: AssetImage('images/deeds/$deedNo.png'),
-                height: 150,
-              ),
-            ),
-            content: SingleChildScrollView(
-              child: Center(
-                child: ListBody(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                        child: Text(
-                      deeds[deedNo][0],
-                      style: TextStyle(
-                          color: Color(0xff3D3D3D),
-                          fontSize: 26,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.1),
-                      textAlign: TextAlign.center,
-                    )),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      child: Text(
-                        deeds[deedNo][1],
-                        style: TextStyle(
-                            color: Color(0xff737373),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            letterSpacing: 1.1),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    MaterialButton(
-                      height: 40,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      color: Color(0xff3D3D3D),
-                      child: Text(
-                        'Mark As Done',
-                        style: TextStyle(
-                            fontSize: constraint.maxHeight * 0.0251,
-                            color: Colors.white),
-                      ),
-                      onPressed: () {
-                        deedNo = (deedNo + 1) % deeds.length;
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
+                title: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Image(
+                    image: AssetImage('images/deeds/$deedNo.png'),
+                    height: 150,
+                  ),
                 ),
-              ),
-            ),
-          );
-        });
+                content: SingleChildScrollView(
+                  child: Center(
+                    child: ListBody(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                            child: Text(
+                              deeds[deedNo][0],
+                              style: TextStyle(
+                                  color: Color(0xff3D3D3D),
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.1),
+                              textAlign: TextAlign.center,
+                            )),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          child: Text(
+                            deeds[deedNo][1],
+                            style: TextStyle(
+                                color: Color(0xff737373),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.1),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        MaterialButton(
+                          height: 40,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xff3D3D3D),
+                          child: Text(
+                            'Mark As Done',
+                            style: TextStyle(
+                                fontSize: constraint.maxHeight * 0.0251,
+                                color: Colors.white),
+                          ),
+                          onPressed: () {
+                            deedNo = (deedNo + 1) % deeds.length;
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+    );
+  }
+
+  Future<void> _errorDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraint) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                title: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 15),
+                  child: Image(
+                    image: AssetImage('images/sad-earth.png'),
+                    height: 80,
+                  ),
+                ),
+                content: SingleChildScrollView(
+                  child: Center(
+                    child: ListBody(
+                      children: <Widget>[
+                        Container(
+                            child: Text(
+                              "Keep Patience!",
+                              style: TextStyle(
+                                  color: Color(0xff3D3D3D),
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.1),
+                              textAlign: TextAlign.center,
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          child: Text(
+                            "Please hold on till the object is identified.",
+                            style: TextStyle(
+                                color: Color(0xff737373),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.1),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        MaterialButton(
+                          height: 40,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xffA5C528),
+                          child: Text(
+                            'Okay',
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Color(0xff3D3D3D),
+                                letterSpacing: 1.1),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+    );
+  }
+
+  Future<void> _showNewsDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraint) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                title: Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Image(
+                    image: AssetImage('images/home-page.jpg'),
+                    height: 120,
+                  ), //TODO img for news
+                ),
+                content: SingleChildScrollView(
+                  child: Center(
+                    child: ListBody(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                            child: Text(
+                              "India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World",
+                              style: TextStyle(
+                                  color: Color(0xff3D3D3D),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.1),
+                              textAlign: TextAlign.start,
+                            )),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          height: 100,
+                          child: SingleChildScrollView(
+                            child: Text(
+                              newsBody,
+                              style: TextStyle(
+                                  color: Color(0xff737373),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        MaterialButton(
+                          height: 40,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xff3D3D3D),
+                          child: Text(
+                            'Close',
+                            style: TextStyle(
+                                fontSize: constraint.maxHeight * 0.0251,
+                                color: Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
       },
     );
   }
@@ -138,7 +294,10 @@ class _MainScreenState extends State<MainScreen> {
                       child: IconButton(
                         icon: Icon(Icons.format_list_bulleted),
                         onPressed: () {
-                        //  TODO navigate to user profile drawer
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  BottomDrawerScreen());
                         },
                       ),
                     ),
@@ -186,12 +345,12 @@ class _MainScreenState extends State<MainScreen> {
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                    BorderRadius.all(Radius.circular(10)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF3D3D3D), width: 2.5)),
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                    BorderRadius.all(Radius.circular(10)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF3D3D3D), width: 2.5)),
                                 contentPadding: EdgeInsets.fromLTRB(
@@ -206,7 +365,14 @@ class _MainScreenState extends State<MainScreen> {
                                     color: Color(0xFF3D3D3D),
                                   ),
                                   onPressed: () {
-                                  //TODO navigate to analysis screen
+                                    if (AnalysisScreen.check(
+                                        AnalysisScreen.material) !=
+                                        null)
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AnalysisScreen()));
                                   },
                                 ),
                                 labelText: 'Input for Eco-check',
@@ -216,10 +382,16 @@ class _MainScreenState extends State<MainScreen> {
                                 hintText: 'Enter material name',
                                 fillColor: Colors.black),
                             onChanged: (value) {
-                              // TODO assign analysis screen -> material = value
+                              AnalysisScreen.material = value;
                             },
                             onSubmitted: (value) {
-                            //  TODO navigate to analysis screen
+                              AnalysisScreen.material = value;
+                              if (AnalysisScreen.check(value) != null)
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AnalysisScreen()));
                             },
                           ),
                         ),
@@ -242,7 +414,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                            AssetImage('images/icon/co2.png')),
+                                        AssetImage('images/icon/co2.png')),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -280,7 +452,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                            AssetImage('images/icon/pmi.png')),
+                                        AssetImage('images/icon/pmi.png')),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -352,7 +524,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                            AssetImage('images/icon/cam.png')),
+                                        AssetImage('images/icon/cam.png')),
                                     onPressed: () {
                                       //TODO eco check
                                     },
@@ -408,7 +580,7 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () {
-                              //TODO news
+                              _showNewsDialog(); //TODO news1
                             },
                             elevation: 3,
                             padding: EdgeInsets.all(0),
@@ -420,6 +592,7 @@ class _MainScreenState extends State<MainScreen> {
                               width: constraints.maxWidth * 0.54,
                               padding: EdgeInsets.all(
                                   constraints.maxHeight * 0.01785),
+//                                  color: Color(0xFF2F3B01),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -450,7 +623,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              //TODO news
+                              _showNewsDialog(); //TODO news2
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -493,7 +666,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              //TODO news
+                              _showNewsDialog(); //TODO news3
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
