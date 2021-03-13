@@ -14,7 +14,7 @@ from recyclingCentres import query4
 
 app = Flask(__name__)
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+THIS_FOLDER = os.path.abspath(os.path.dirname(__file__))
 my_file = os.path.join(THIS_FOLDER, 'GarbageClassifier_Xce.h5')
 
 global sess
