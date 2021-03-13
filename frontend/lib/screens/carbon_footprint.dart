@@ -85,55 +85,103 @@ class _carbonFootprintState extends State<carbonFootprint> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    //TODO will pop scope
-    return Scaffold(
-        backgroundColor: Color(0xFF3D3D3D),
-        appBar: AppBar(
-          centerTitle: true,
+
+    return WillPopScope(
+      onWillPop: (){
+        Navigator.pop(context);
+      },
+      child: Scaffold(
           backgroundColor: Color(0xFF3D3D3D),
-          elevation: 0,
-          leading: BackButton(
-            color: Color(0xFFFFFFFF),
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Color(0xFF3D3D3D),
+            elevation: 0,
+            leading: BackButton(
+              color: Color(0xFFFFFFFF),
+            ),
+            title: Text(
+              "Carbon Footprint",
+              style: TextStyle(fontSize: width * 0.06),
+            ),
           ),
-          title: Text(
-            "Carbon Footprint",
-            style: TextStyle(fontSize: width * 0.06),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 25.0),
-          child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return Container(
-                  child: ListView(
-                    children: [
-                      Container(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(right: 25),
-                              decoration: BoxDecoration(
-                                  border: Border(
-                                    right: BorderSide(
-                                      //                   <--- left side
-                                      color: Colors.white,
-                                      width: 1.0,
+          body: Padding(
+            padding: const EdgeInsets.only(top: 25.0),
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return Container(
+                    child: ListView(
+                      children: [
+                        Container(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.only(right: 25),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                      right: BorderSide(
+                                        //                   <--- left side
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      ),
+                                    )),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image(
+                                      height: 0.082 * constraints.maxHeight,
+                                      image: AssetImage('images/icon/co2.png'),
+                                      fit: BoxFit.fill,
                                     ),
-                                  )),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Text(
+                                        carbon_footprint <=9999?carbon_footprint.toStringAsFixed(3) :"9999",
+                                        style: TextStyle(
+                                          fontSize: 0.07 * width,
+                                          color: Colors.white,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 0),
+                                      child: Text(
+                                        "Kgs/month",
+                                        style: TextStyle(
+                                          fontSize: 0.03 * width,
+                                          color: Colors.white,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Column(
                                 children: [
-                                  Image(
+                                  Container(
+                                    width: 0.082 * constraints.maxHeight,
                                     height: 0.082 * constraints.maxHeight,
-                                    image: AssetImage('images/icon/co2.png'),
-                                    fit: BoxFit.fill,
+                                    child: RawMaterialButton(
+                                      fillColor: Color(0xFFA5C528),
+                                      shape: CircleBorder(),
+                                      elevation: 1,
+                                      child: Icon(
+                                        Icons.arrow_forward,
+                                        color: Color(0xFF3D3D3D),
+                                        size: 0.028 * constraints.maxHeight,
+                                      ),
+                                      onPressed: () {
+                                        //TODO navigate to suggestions
+                                      },
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Text(
-                                      carbon_footprint <=9999?carbon_footprint.toStringAsFixed(3) :"9999",
+                                      "Suggestions",
                                       style: TextStyle(
                                         fontSize: 0.07 * width,
                                         color: Colors.white,
@@ -144,7 +192,7 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 0),
                                     child: Text(
-                                      "Kgs/month",
+                                      "Cut your emissions!",
                                       style: TextStyle(
                                         fontSize: 0.03 * width,
                                         color: Colors.white,
@@ -153,278 +201,235 @@ class _carbonFootprintState extends State<carbonFootprint> {
                                     ),
                                   ),
                                 ],
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 35,
+                              left: 35,
+                              right: 35,
+                              top: 35,
+                            ),
+                            child: Container(
+                              padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                              width: width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Text(
+                                      "Household",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 0.05 * width,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 0.08 * width,
+                                  ),
+                                  Column(
+                                    children: [
+                                      inputWidgets(
+                                          "Electricity",
+                                          household["Electricity"],
+                                          household,
+                                          "kWh/month",
+                                          saveValue),
+                                      inputWidgets(
+                                          "Natural Gas",
+                                          household["Natural Gas"],
+                                          household,
+                                          "therms/month",
+                                          saveValue),
+                                      inputWidgets(
+                                          "Fuel Oil",
+                                          household["Fuel Oil"],
+                                          household,
+                                          "litres/month",
+                                          saveValue),
+                                      inputWidgets("LPG", household["LPG"],
+                                          household, "litres/month", saveValue),
+                                      inputWidgets("Waste", household["Waste"],
+                                          household, "kgs/month", saveValue),
+                                    ],
+                                  )
+                                ],
                               ),
                             ),
-                            Column(
-                              children: [
-                                Container(
-                                  width: 0.082 * constraints.maxHeight,
-                                  height: 0.082 * constraints.maxHeight,
-                                  child: RawMaterialButton(
-                                    fillColor: Color(0xFFA5C528),
-                                    shape: CircleBorder(),
-                                    elevation: 1,
-                                    child: Icon(
-                                      Icons.arrow_forward,
-                                      color: Color(0xFF3D3D3D),
-                                      size: 0.028 * constraints.maxHeight,
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 35,
+                              left: 35,
+                              right: 35,
+                            ),
+                            child: Container(
+                              padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                              width: width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Text(
+                                      "Food",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 0.05 * width,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    onPressed: () {
-                                      //TODO navigate to suggestions
-                                    },
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Text(
-                                    "Suggestions",
-                                    style: TextStyle(
-                                      fontSize: 0.07 * width,
-                                      color: Colors.white,
+                                  SizedBox(
+                                    height: 0.08 * width,
+                                  ),
+                                  Column(
+                                    children: [
+                                      inputWidgets("Lamb", food["Lamb"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Beef", food["Beef"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Cheese", food["Cheese"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Pork", food["Pork"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Chicken", food["Chicken"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Eggs", food["Eggs"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Potatoes", food["Potates"],
+                                          food, "kgs/month", saveValue),
+                                      inputWidgets("Rice", food["Rice"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Nuts", food["Nuts"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Vegetables", food["Vegetables"],
+                                          food, "kgs/month", saveValue),
+                                      inputWidgets("Milk", food["Milk"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Fruit", food["Fruit"], food,
+                                          "kgs/month", saveValue),
+                                      inputWidgets("Lentils", food["Lentils"], food,
+                                          "kgs/month", saveValue),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 35,
+                              left: 35,
+                              right: 35,
+                            ),
+                            child: Container(
+                              padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                              width: width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Text(
+                                      "Traveling",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 0.05 * width,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 0),
-                                  child: Text(
-                                    "Cut your emissions!",
-                                    style: TextStyle(
-                                      fontSize: 0.03 * width,
-                                      color: Colors.white,
+                                  SizedBox(
+                                    height: 0.08 * width,
+                                  ),
+                                  Column(
+                                    children: [
+                                      inputWidgets("Diesel", travel["Diesel"], food,
+                                          "litres/mo", saveValue),
+                                      inputWidgets("Petrol", food["Petrol"], food,
+                                          "litres/mo", saveValue),
+                                      inputWidgets("LPG", food["LPG"], food,
+                                          "litres/mo", saveValue),
+                                      inputWidgets("CNG", food["CNG"], food,
+                                          "litres/mo", saveValue),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 35,
+                              left: 35,
+                              right: 35,
+                            ),
+                            child: Container(
+                              padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                              width: width,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 0),
+                                    child: Text(
+                                      "Other",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontSize: 0.05 * width,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 35,
-                            left: 35,
-                            right: 35,
-                            top: 35,
-                          ),
-                          child: Container(
-                            padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Text(
-                                    "Household",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 0.05 * width,
-                                        fontWeight: FontWeight.bold),
+                                  SizedBox(
+                                    height: 0.08 * width,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 0.08 * width,
-                                ),
-                                Column(
-                                  children: [
-                                    inputWidgets(
-                                        "Electricity",
-                                        household["Electricity"],
-                                        household,
-                                        "kWh/month",
-                                        saveValue),
-                                    inputWidgets(
-                                        "Natural Gas",
-                                        household["Natural Gas"],
-                                        household,
-                                        "therms/month",
-                                        saveValue),
-                                    inputWidgets(
-                                        "Fuel Oil",
-                                        household["Fuel Oil"],
-                                        household,
-                                        "litres/month",
-                                        saveValue),
-                                    inputWidgets("LPG", household["LPG"],
-                                        household, "litres/month", saveValue),
-                                    inputWidgets("Waste", household["Waste"],
-                                        household, "kgs/month", saveValue),
-                                  ],
-                                )
-                              ],
+                                  Column(
+                                    children: [
+                                      inputWidgets("Paper", other["Paper"], food,
+                                          "kgs/month", saveValue),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 35,
-                            left: 35,
-                            right: 35,
-                          ),
-                          child: Container(
-                            padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Text(
-                                    "Food",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 0.05 * width,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 0.08 * width,
-                                ),
-                                Column(
-                                  children: [
-                                    inputWidgets("Lamb", food["Lamb"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Beef", food["Beef"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Cheese", food["Cheese"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Pork", food["Pork"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Chicken", food["Chicken"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Eggs", food["Eggs"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Potatoes", food["Potates"],
-                                        food, "kgs/month", saveValue),
-                                    inputWidgets("Rice", food["Rice"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Nuts", food["Nuts"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Vegetables", food["Vegetables"],
-                                        food, "kgs/month", saveValue),
-                                    inputWidgets("Milk", food["Milk"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Fruit", food["Fruit"], food,
-                                        "kgs/month", saveValue),
-                                    inputWidgets("Lentils", food["Lentils"], food,
-                                        "kgs/month", saveValue),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 35,
-                            left: 35,
-                            right: 35,
-                          ),
-                          child: Container(
-                            padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Text(
-                                    "Traveling",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 0.05 * width,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 0.08 * width,
-                                ),
-                                Column(
-                                  children: [
-                                    inputWidgets("Diesel", travel["Diesel"], food,
-                                        "litres/mo", saveValue),
-                                    inputWidgets("Petrol", food["Petrol"], food,
-                                        "litres/mo", saveValue),
-                                    inputWidgets("LPG", food["LPG"], food,
-                                        "litres/mo", saveValue),
-                                    inputWidgets("CNG", food["CNG"], food,
-                                        "litres/mo", saveValue),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: 35,
-                            left: 35,
-                            right: 35,
-                          ),
-                          child: Container(
-                            padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                            width: width,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 0),
-                                  child: Text(
-                                    "Other",
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                        fontSize: 0.05 * width,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 0.08 * width,
-                                ),
-                                Column(
-                                  children: [
-                                    inputWidgets("Paper", other["Paper"], food,
-                                        "kgs/month", saveValue),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        ));
+                      ],
+                    ),
+                  );
+                }),
+          )),
+    );
   }
 }
 

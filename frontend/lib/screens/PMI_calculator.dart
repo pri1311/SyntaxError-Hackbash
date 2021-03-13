@@ -73,55 +73,103 @@ class _PMI_calculatorState extends State<PMI_calculator> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    //TODO will pop scope
-    return Scaffold(
-        backgroundColor: Color(0xFF3D3D3D),
-        appBar: AppBar(
-          centerTitle: true,
+
+    return WillPopScope(
+      onWillPop: (){
+        Navigator.pop(context);
+      },
+      child: Scaffold(
           backgroundColor: Color(0xFF3D3D3D),
-          elevation: 0,
-          leading: BackButton(
-            color: Color(0xFFFFFFFF),
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: Color(0xFF3D3D3D),
+            elevation: 0,
+            leading: BackButton(
+              color: Color(0xFFFFFFFF),
+            ),
+            title: Text(
+              "PMI Check",
+              style: TextStyle(fontSize: width * 0.06, letterSpacing: 1.3),
+            ),
           ),
-          title: Text(
-            "PMI Check",
-            style: TextStyle(fontSize: width * 0.06, letterSpacing: 1.3),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 25.0),
-          child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-            return Container(
-              child: ListView(
-                children: [
-                  Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(right: 25),
-                          decoration: BoxDecoration(
-                              border: Border(
-                            right: BorderSide(
-                              //                   <--- left side
-                              color: Colors.white,
-                              width: 1.0,
+          body: Padding(
+            padding: const EdgeInsets.only(top: 25.0),
+            child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+              return Container(
+                child: ListView(
+                  children: [
+                    Container(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(right: 25),
+                            decoration: BoxDecoration(
+                                border: Border(
+                              right: BorderSide(
+                                //                   <--- left side
+                                color: Colors.white,
+                                width: 1.0,
+                              ),
+                            )),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image(
+                                  height: 0.082 * constraints.maxHeight,
+                                  image: AssetImage('images/icon/pmi.png'),
+                                  fit: BoxFit.fill,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Text(
+                                    pmi.toStringAsFixed(3),
+                                    style: TextStyle(
+                                      fontSize: 0.07 * width,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: Text(
+                                    "Kgs/week",
+                                    style: TextStyle(
+                                      fontSize: 0.03 * width,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
                             ),
-                          )),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                          Column(
                             children: [
-                              Image(
+                              Container(
+                                width: 0.082 * constraints.maxHeight,
                                 height: 0.082 * constraints.maxHeight,
-                                image: AssetImage('images/icon/pmi.png'),
-                                fit: BoxFit.fill,
+                                child: RawMaterialButton(
+                                  fillColor: Color(0xFFA5C528),
+                                  shape: CircleBorder(),
+                                  elevation: 1,
+                                  child: Icon(
+                                    Icons.arrow_forward,
+                                    color: Color(0xFF3D3D3D),
+                                    size: 0.028 * constraints.maxHeight,
+                                  ),
+                                  onPressed: () {
+                                    //TODO navigate to suggestions
+                                  },
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(
-                                  pmi.toStringAsFixed(3),
+                                  "Suggestions",
                                   style: TextStyle(
                                     fontSize: 0.07 * width,
                                     color: Colors.white,
@@ -132,7 +180,7 @@ class _PMI_calculatorState extends State<PMI_calculator> {
                               Padding(
                                 padding: const EdgeInsets.only(left: 0),
                                 child: Text(
-                                  "Kgs/week",
+                                  "Decrease your PMI",
                                   style: TextStyle(
                                     fontSize: 0.03 * width,
                                     color: Colors.white,
@@ -141,270 +189,227 @@ class _PMI_calculatorState extends State<PMI_calculator> {
                                 ),
                               ),
                             ],
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(35),
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                          width: width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  "Food and Kitchen needs",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 0.05 * width,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 0.08 * width,
+                              ),
+                              Column(
+                                children: [
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Softdrink Bottles",
+                                      FoodandKitchen["Softdrink Bottles"],
+                                      FoodandKitchen),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Plastic Bags",
+                                      FoodandKitchen["Plastic Bags"],
+                                      FoodandKitchen),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Food Wrappers",
+                                      FoodandKitchen["Food Wrappers"],
+                                      FoodandKitchen),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Yoghurt Containers",
+                                      FoodandKitchen["Yoghurt Containers"],
+                                      FoodandKitchen),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 0.082 * constraints.maxHeight,
-                              height: 0.082 * constraints.maxHeight,
-                              child: RawMaterialButton(
-                                fillColor: Color(0xFFA5C528),
-                                shape: CircleBorder(),
-                                elevation: 1,
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Color(0xFF3D3D3D),
-                                  size: 0.028 * constraints.maxHeight,
-                                ),
-                                onPressed: () {
-                                  //TODO navigate to suggestions
-                                },
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text(
-                                "Suggestions",
-                                style: TextStyle(
-                                  fontSize: 0.07 * width,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 0),
-                              child: Text(
-                                "Decrease your PMI",
-                                style: TextStyle(
-                                  fontSize: 0.03 * width,
-                                  color: Colors.white,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(35),
-                      child: Container(
-                        padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                        width: width,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                "Food and Kitchen needs",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 0.05 * width,
-                                    fontWeight: FontWeight.bold),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 35,
+                          left: 35,
+                          right: 35,
+                        ),
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                          width: width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  "Bathroom and Laundry",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 0.05 * width,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 0.08 * width,
-                            ),
-                            Column(
-                              children: [
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Softdrink Bottles",
-                                    FoodandKitchen["Softdrink Bottles"],
-                                    FoodandKitchen),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Plastic Bags",
-                                    FoodandKitchen["Plastic Bags"],
-                                    FoodandKitchen),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Food Wrappers",
-                                    FoodandKitchen["Food Wrappers"],
-                                    FoodandKitchen),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Yoghurt Containers",
-                                    FoodandKitchen["Yoghurt Containers"],
-                                    FoodandKitchen),
-                              ],
-                            )
-                          ],
+                              SizedBox(
+                                height: 0.08 * width,
+                              ),
+                              Column(
+                                children: [
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Cotton Swabs",
+                                      bathroom["Cotton Swabs"],
+                                      bathroom),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Refill packets",
+                                      bathroom["Refill packets"],
+                                      bathroom),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Toothbrushes",
+                                      bathroom["Toothbrushes"],
+                                      bathroom),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Detergent, cleaning products bottles",
+                                      bathroom[
+                                          "Detergent, cleaning products bottles"],
+                                      bathroom),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Toothpastes",
+                                      bathroom["Toothpastes"],
+                                      bathroom),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Shampoo, Shower Gel, Cosmetics bottles",
+                                      bathroom[
+                                          "Shampoo, Shower Gel, Cosmetics bottles"],
+                                      bathroom),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 35,
-                        left: 35,
-                        right: 35,
-                      ),
-                      child: Container(
-                        padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                        width: width,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                "Bathroom and Laundry",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 0.05 * width,
-                                    fontWeight: FontWeight.bold),
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 35,
+                          left: 35,
+                          right: 35,
+                        ),
+                        child: Container(
+                          padding:
+                              EdgeInsets.only(top: 25, bottom: 25, left: 25),
+                          width: width,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  "Disposable Containers and Packaging",
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                      fontSize: 0.05 * width,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 0.08 * width,
-                            ),
-                            Column(
-                              children: [
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Cotton Swabs",
-                                    bathroom["Cotton Swabs"],
-                                    bathroom),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Refill packets",
-                                    bathroom["Refill packets"],
-                                    bathroom),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Toothbrushes",
-                                    bathroom["Toothbrushes"],
-                                    bathroom),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Detergent, cleaning products bottles",
-                                    bathroom[
-                                        "Detergent, cleaning products bottles"],
-                                    bathroom),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Toothpastes",
-                                    bathroom["Toothpastes"],
-                                    bathroom),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Shampoo, Shower Gel, Cosmetics bottles",
-                                    bathroom[
-                                        "Shampoo, Shower Gel, Cosmetics bottles"],
-                                    bathroom),
-                              ],
-                            )
-                          ],
+                              SizedBox(
+                                height: 0.08 * width,
+                              ),
+                              Column(
+                                children: [
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Take-away Plastic Box",
+                                      containersandPackaging[
+                                          "Take-away Plastic Box"],
+                                      containersandPackaging),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Take-away Plastic Cup",
+                                      containersandPackaging[
+                                          "Take-away Plastic Cup"],
+                                      containersandPackaging),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Straws",
+                                      containersandPackaging["Straws"],
+                                      containersandPackaging),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Disposable Cutlery",
+                                      containersandPackaging[
+                                          "Disposable Cutlery"],
+                                      containersandPackaging),
+                                  inputWidgets(
+                                      decrementValues,
+                                      incrementValues,
+                                      "Plastic Plates",
+                                      containersandPackaging["Plastic Plates"],
+                                      containersandPackaging),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Container(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 35,
-                        left: 35,
-                        right: 35,
-                      ),
-                      child: Container(
-                        padding:
-                            EdgeInsets.only(top: 25, bottom: 25, left: 25),
-                        width: width,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15))),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 0),
-                              child: Text(
-                                "Disposable Containers and Packaging",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    fontSize: 0.05 * width,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 0.08 * width,
-                            ),
-                            Column(
-                              children: [
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Take-away Plastic Box",
-                                    containersandPackaging[
-                                        "Take-away Plastic Box"],
-                                    containersandPackaging),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Take-away Plastic Cup",
-                                    containersandPackaging[
-                                        "Take-away Plastic Cup"],
-                                    containersandPackaging),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Straws",
-                                    containersandPackaging["Straws"],
-                                    containersandPackaging),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Disposable Cutlery",
-                                    containersandPackaging[
-                                        "Disposable Cutlery"],
-                                    containersandPackaging),
-                                inputWidgets(
-                                    decrementValues,
-                                    incrementValues,
-                                    "Plastic Plates",
-                                    containersandPackaging["Plastic Plates"],
-                                    containersandPackaging),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          }),
-        ));
+                    )
+                  ],
+                ),
+              );
+            }),
+          )),
+    );
   }
 }
 
