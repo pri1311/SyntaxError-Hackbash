@@ -16,6 +16,7 @@ app = Flask(__name__)
 
 THIS_FOLDER = os.path.abspath(os.path.dirname(__file__))
 my_file = os.path.join(THIS_FOLDER, 'GarbageClassifier_Xce.h5')
+print(my_file)
 
 global sess
 sess = tf.compat.v1.Session()
