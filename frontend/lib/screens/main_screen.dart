@@ -7,9 +7,10 @@ import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MainScreen extends StatefulWidget {
-
   static int status;
 
   @override
@@ -20,45 +21,51 @@ class _MainScreenState extends State<MainScreen> {
   SharedPreferences prefs;
   bool _seen;
 
-  void checkFirstSeen() async {
+  var data;
 
+  void getData() async {
+    final url = 'http://10.0.2.2:5000/news';
+    print('something');
+    final response = await http.get(
+      url,
+    );
+    setState(() {
+      // print(response.body);
+      final decoded = json.decode(response.body) as Map<String, dynamic>;
+      // print(decoded);
+      data = decoded['status']['message'];
+      print(data);
+    });
+  }
+
+  void checkFirstSeen() async {
     prefs = await SharedPreferences.getInstance();
     // _seen = (prefs.getBool('seen') ?? true);
-    _seen = MainScreen.status==0 ? true : false;
+    _seen = MainScreen.status == 0 ? true : false;
 
     if (_seen == true) {
       _showDeedDialog();
     }
   }
+
   String input = "";
-  List<String> news = ["", "", ""];
   @override
   void initState() {
-    // TODO: implement initState
-    news[0] =
-    'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
-    news[1] =
-    'Supreme Court asks Centre why environment regulator has not been set up';
-    news[2] =
-    'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
-    //TODO initialise 3 news statements (only title)
+    getData();
+    print(data);
     checkFirstSeen();
     super.initState();
   }
 
-  String newsBody =
-      "The Union Environment Ministry and the Delhi government jointly launched 'Clean Air Campaign' which saw 4,347 violations in a week, officials said on Monday. The officials added that 1,892 violators were fined, leading to a collection of ₹54 crore. The campaign was launched on February 10 to find a permanent solution to pollution in Delhi-NCR.";
-
   Future<void> readValues() async {
     final prefs = await SharedPreferences.getInstance();
     BottomDrawerScreen.netDeedValue = prefs.getInt('deed_value') ?? 0;
-    BottomDrawerScreen.pmiValue = prefs.getDouble('pmi')??0.0;
-    BottomDrawerScreen.co2 = prefs.getDouble('carbon_footprint')??0.0;
-    BottomDrawerScreen.stepValue = prefs.getInt('step_value')??0;
+    BottomDrawerScreen.pmiValue = prefs.getDouble('pmi') ?? 0.0;
+    BottomDrawerScreen.co2 = prefs.getDouble('carbon_footprint') ?? 0.0;
+    BottomDrawerScreen.stepValue = prefs.getInt('step_value') ?? 0;
   }
 
   Future<void> _showDeedDialog() async {
-
     final prefs = await SharedPreferences.getInstance();
     int deedNo = prefs.getInt('deed_number') ?? 0;
     int netDeedValue = prefs.getInt('deed_value') ?? 0;
@@ -69,79 +76,79 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context) {
         return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraint) {
-              return AlertDialog(
-                contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                shape:
+          return AlertDialog(
+            contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+            shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                title: Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Image(
-                    image: AssetImage('images/deeds/$deedNo.png'),
-                    height: 150,
-                  ),
-                ),
-                content: SingleChildScrollView(
-                  child: Center(
-                    child: ListBody(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                            child: Text(
-                              deeds[deedNo][0],
-                              style: TextStyle(
-                                  color: Color(0xff3D3D3D),
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.1),
-                              textAlign: TextAlign.center,
-                            )),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          child: Text(
-                            deeds[deedNo][1],
-                            style: TextStyle(
-                                color: Color(0xff737373),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.1),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        MaterialButton(
-                          height: 40,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xff3D3D3D),
-                          child: Text(
-                            'Mark As Done',
-                            style: TextStyle(
-                                fontSize: constraint.maxHeight * 0.0251,
-                                color: Colors.white),
-                          ),
-                          onPressed: () async {
-                            netDeedValue++;
-                            prefs.setInt('deed_value', netDeedValue);
-                            deedNo = (deedNo + 1) % deeds.length;
-                            prefs.setInt('deed_number', deedNo);
-                            _seen=false;
-                            prefs.setBool("seen", _seen) ;
-                            MainScreen.status=1;
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
+            title: Padding(
+              padding: EdgeInsets.all(20),
+              child: Image(
+                image: AssetImage('images/deeds/$deedNo.png'),
+                height: 150,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: Center(
+                child: ListBody(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
                     ),
-                  ),
+                    Container(
+                        child: Text(
+                      deeds[deedNo][0],
+                      style: TextStyle(
+                          color: Color(0xff3D3D3D),
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.1),
+                      textAlign: TextAlign.center,
+                    )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      child: Text(
+                        deeds[deedNo][1],
+                        style: TextStyle(
+                            color: Color(0xff737373),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.1),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    MaterialButton(
+                      height: 40,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      color: Color(0xff3D3D3D),
+                      child: Text(
+                        'Mark As Done',
+                        style: TextStyle(
+                            fontSize: constraint.maxHeight * 0.0251,
+                            color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        netDeedValue++;
+                        prefs.setInt('deed_value', netDeedValue);
+                        deedNo = (deedNo + 1) % deeds.length;
+                        prefs.setInt('deed_number', deedNo);
+                        _seen = false;
+                        prefs.setBool("seen", _seen);
+                        MainScreen.status = 1;
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
                 ),
-              );
-            });
+              ),
+            ),
+          );
+        });
       },
     );
   }
@@ -153,149 +160,150 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context) {
         return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraint) {
-              return AlertDialog(
-                contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                shape:
+          return AlertDialog(
+            contentPadding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+            shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                title: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 20, 0, 15),
-                  child: Image(
-                    image: AssetImage('images/sad-earth.png'),
-                    height: 80,
-                  ),
-                ),
-                content: SingleChildScrollView(
-                  child: Center(
-                    child: ListBody(
-                      children: <Widget>[
-                        Container(
-                            child: Text(
-                              "Keep Patience!",
-                              style: TextStyle(
-                                  color: Color(0xff3D3D3D),
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.1),
-                              textAlign: TextAlign.center,
-                            )),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          child: Text(
-                            "Please hold on till the object is identified.",
-                            style: TextStyle(
-                                color: Color(0xff737373),
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1.1),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        MaterialButton(
-                          height: 40,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xffA5C528),
-                          child: Text(
-                            'Okay',
-                            style: TextStyle(
-                                fontSize: 22,
-                                color: Color(0xff3D3D3D),
-                                letterSpacing: 1.1),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
+            title: Padding(
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 15),
+              child: Image(
+                image: AssetImage('images/sad-earth.png'),
+                height: 80,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: Center(
+                child: ListBody(
+                  children: <Widget>[
+                    Container(
+                        child: Text(
+                      "Keep Patience!",
+                      style: TextStyle(
+                          color: Color(0xff3D3D3D),
+                          fontSize: 26,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.1),
+                      textAlign: TextAlign.center,
+                    )),
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Container(
+                      child: Text(
+                        "Please hold on till the object is identified.",
+                        style: TextStyle(
+                            color: Color(0xff737373),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 1.1),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MaterialButton(
+                      height: 40,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      color: Color(0xffA5C528),
+                      child: Text(
+                        'Okay',
+                        style: TextStyle(
+                            fontSize: 22,
+                            color: Color(0xff3D3D3D),
+                            letterSpacing: 1.1),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
                 ),
-              );
-            });
+              ),
+            ),
+          );
+        });
       },
     );
   }
 
-  Future<void> _showNewsDialog() async {
+  Future<void> _showNewsDialog(int index) async {
+    print(index);
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraint) {
-              return AlertDialog(
-                contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                shape:
+          return AlertDialog(
+            contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+            shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                title: Padding(
-                  padding: EdgeInsets.all(0),
-                  child: Image(
-                    image: AssetImage('images/home-page.jpg'),
-                    height: 120,
-                  ), //TODO img for news
-                ),
-                content: SingleChildScrollView(
-                  child: Center(
-                    child: ListBody(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                            child: Text(
-                              "India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World",
-                              style: TextStyle(
-                                  color: Color(0xff3D3D3D),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  letterSpacing: 1.1),
-                              textAlign: TextAlign.start,
-                            )),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        Container(
-                          height: 100,
-                          child: SingleChildScrollView(
-                            child: Text(
-                              newsBody,
-                              style: TextStyle(
-                                  color: Color(0xff737373),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.start,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        MaterialButton(
-                          height: 40,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xff3D3D3D),
-                          child: Text(
-                            'Close',
-                            style: TextStyle(
-                                fontSize: constraint.maxHeight * 0.0251,
-                                color: Colors.white),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        )
-                      ],
+            title: Padding(
+              padding: EdgeInsets.all(0),
+              child: Image(
+                image: AssetImage('images/home-page.jpg'),
+                height: 120,
+              ), //TODO img for news
+            ),
+            content: SingleChildScrollView(
+              child: Center(
+                child: ListBody(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Container(
+                        child: Text(
+                      data[index]['title'],
+                      style: TextStyle(
+                          color: Color(0xff3D3D3D),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.1),
+                      textAlign: TextAlign.start,
+                    )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      height: 100,
+                      child: SingleChildScrollView(
+                        child: Text(
+                          data[index]['content'],
+                          style: TextStyle(
+                              color: Color(0xff737373),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    MaterialButton(
+                      height: 40,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      color: Color(0xff3D3D3D),
+                      child: Text(
+                        'Close',
+                        style: TextStyle(
+                            fontSize: constraint.maxHeight * 0.0251,
+                            color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
                 ),
-              );
-            });
+              ),
+            ),
+          );
+        });
       },
     );
   }
@@ -381,12 +389,12 @@ class _MainScreenState extends State<MainScreen> {
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                        BorderRadius.all(Radius.circular(10)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF3D3D3D), width: 2.5)),
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                        BorderRadius.all(Radius.circular(10)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF3D3D3D), width: 2.5)),
                                 contentPadding: EdgeInsets.fromLTRB(
@@ -402,7 +410,7 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                   onPressed: () {
                                     if (AnalysisScreen.check(
-                                        AnalysisScreen.material) !=
+                                            AnalysisScreen.material) !=
                                         null)
                                       Navigator.push(
                                           context,
@@ -450,7 +458,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                        AssetImage('images/icon/co2.png')),
+                                            AssetImage('images/icon/co2.png')),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -488,7 +496,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                        AssetImage('images/icon/pmi.png')),
+                                            AssetImage('images/icon/pmi.png')),
                                     onPressed: () {
                                       Navigator.push(
                                           context,
@@ -560,7 +568,7 @@ class _MainScreenState extends State<MainScreen> {
 //                                  width: constraints.maxWidth,
                                         height: 0.028 * constraints.maxHeight,
                                         image:
-                                        AssetImage('images/icon/cam.png')),
+                                            AssetImage('images/icon/cam.png')),
                                     onPressed: () {
                                       //TODO eco check
                                     },
@@ -616,7 +624,7 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news1
+                              _showNewsDialog(0); //TODO news1
                             },
                             elevation: 3,
                             padding: EdgeInsets.all(0),
@@ -639,7 +647,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[0],
+                                      data[0]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -659,7 +667,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news2
+                              _showNewsDialog(1); //TODO news2
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -682,7 +690,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[1],
+                                      data[1]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -702,7 +710,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news3
+                              _showNewsDialog(2); //TODO news3
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -725,7 +733,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[2],
+                                      data[2]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
