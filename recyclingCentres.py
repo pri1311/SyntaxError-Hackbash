@@ -31,7 +31,7 @@ class query4:
             directions = item.findAll('a')[-1].get('data-url')
         
             address = item.find("div", {'role':"heading"}).findNext('span').div.findNext('div').span.span.text
-            
+            name=name[:30]
             directions = item.findAll('a')[-1].get('data-url')
             results.append({'name': name, 'rating': rating, 'address': address,'directions': directions})
         
