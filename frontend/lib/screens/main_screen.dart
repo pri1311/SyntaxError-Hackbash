@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-<<<<<<< HEAD
+
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 import 'dart:convert';
@@ -18,10 +18,10 @@ import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'analysis_screen.dart';
-=======
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
->>>>>>> fc46251cea14e90d957f5b304e6af4a181c03f13
+
 
 class MainScreen extends StatefulWidget {
   static int status;
