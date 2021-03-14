@@ -65,33 +65,32 @@ def prediction():
     return jsonify(msg)
 
 
-data1 = {}
-
-
-@app.route('/news', methods=['POST'])
+data1={}
+@app.route('/news', methods=['GET'])
 def scrape():
     global data1
     msg = ""
     html = news.make_request()
     data = news.parse_content(html)
+    print(data)
     if data:
-        data1 = {'data': data}
-        msg = {"status": {"type": "success", "data": 0, "message": data}}
+        data1={'data':data}
+        msg={"status": {"type": "success","data":0, "message": data}}
     else:
         msg = {"status": {"type": "failure", "message": "Missing Data"}}
     return jsonify(msg)
 
 
-@app.route('/recyclingCentres', methods=['POST'])
+@app.route('/recyclingCentres', methods=['GET'])
 def web():
     global data1
     msg = ""
-
+    
     html = query4.make_request()
     data = query4.parse_content(html)
     if data:
-        data1 = {'data': data}
-        msg = {"status": {"type": "success", "data": 4, "message": data}}
+        data1={'data':data}
+        msg={"status": {"type": "success","data":4, "message": data}}
     else:
         msg = {"status": {"type": "failure", "message": "Missing Data"}}
     return jsonify(msg)
