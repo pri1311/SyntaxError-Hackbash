@@ -1,4 +1,3 @@
-
 import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'analysis_screen.dart';
 
-
 class CameraScreen extends StatefulWidget {
   @override
   _CameraScreenState createState() => _CameraScreenState();
@@ -21,16 +19,15 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController cameraController;
   List cameras;
   int selectedCameraIndex;
-  String imgPath,display="loading";
+  String imgPath, display = "loading...";
   File image;
-  int stop=0;
+  int stop = 0;
   var response;
 
-
-  void onCapture() async{
+  void onCapture() async {
     try {
       final p = await getTemporaryDirectory();
-      final name =DateTime.now();
+      final name = DateTime.now();
       final path = "${p.path}/$name.jpg";
       await cameraController.takePicture(path);
       setState(() {
@@ -39,20 +36,16 @@ class _CameraScreenState extends State<CameraScreen> {
       print(path);
       sendReq(image);
 
-      Timer(Duration(seconds: 30), () {
+      Timer(Duration(seconds: 3), () {
         onCapture();
       });
-
-
-
     } catch (e) {
       showCameraException(e);
     }
   }
 
-  void sendReq(File image) async{
-    var stream =
-    new http.ByteStream(DelegatingStream.typed(image.openRead()));
+  void sendReq(File image) async {
+    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
 
     var length = await image.length();
 
@@ -68,16 +61,10 @@ class _CameraScreenState extends State<CameraScreen> {
     var res = await request.send();
 
     response = await http.Response.fromStream(res);
-    final decoded =
-    json.decode(response.body) as Map<String, dynamic>;
+    final decoded = json.decode(response.body) as Map<String, dynamic>;
     setState(() {
       display = decoded["class"];
     });
-
-
-
-
-
   }
 
   Future initCamera(CameraDescription cameraDescription) async {
@@ -161,13 +148,10 @@ class _CameraScreenState extends State<CameraScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                AnalysisScreen()));
-
+                            builder: (context) => AnalysisScreen()));
                 },
               ),
             )
-
           ],
         ),
       ),
@@ -182,7 +166,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     availableCameras().then((value) {
       cameras = value;
-      if(cameras.length > 0){
+      if (cameras.length > 0) {
         setState(() {
           selectedCameraIndex = 0;
         });
@@ -192,17 +176,14 @@ class _CameraScreenState extends State<CameraScreen> {
       } else {
         print('No camera available');
       }
-    }).catchError((e){
+    }).catchError((e) {
       print('Error : ${e.code}');
     });
-
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Container(
         child: Stack(
           children: <Widget>[
@@ -211,35 +192,33 @@ class _CameraScreenState extends State<CameraScreen> {
               child: cameraPreview(context),
             ),
             Align(
-              alignment: Alignment.center,
+                alignment: Alignment.center,
                 child: Opacity(
-                opacity: 0.5,
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey,
-                  child: Text(display,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),),
-                ),
-              )
-            ),
+                  opacity: 0.5,
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.grey,
+                    child: Text(
+                      display,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                )),
             Align(
               alignment: Alignment.bottomRight,
               child: Container(
-                height: 120,
+                height: 100,
                 width: double.infinity,
                 padding: EdgeInsets.all(15),
                 color: Colors.transparent,
                 child: Row(
-
                   children: <Widget>[
-
                     cameraControl(context),
-
                   ],
                 ),
               ),
@@ -249,6 +228,7 @@ class _CameraScreenState extends State<CameraScreen> {
       ),
     );
   }
+
   showCameraException(e) {
     String errorText = 'Error ${e.code} \nError message: ${e.description}';
   }

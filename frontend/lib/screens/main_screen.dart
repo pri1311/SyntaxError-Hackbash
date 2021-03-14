@@ -1,14 +1,14 @@
 import 'package:earthling/screens/PMI_calculator.dart';
 import 'package:earthling/screens/analysis_screen.dart';
+import 'package:earthling/screens/camera.dart';
 import 'package:earthling/screens/carbon_footprint.dart';
+import 'package:earthling/screens/step_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class MainScreen extends StatefulWidget {
   static int status;
@@ -21,23 +21,6 @@ class _MainScreenState extends State<MainScreen> {
   SharedPreferences prefs;
   bool _seen;
 
-  var data;
-
-  void getData() async {
-    final url = 'http://10.0.2.2:5000/news';
-    print('something');
-    final response = await http.get(
-      url,
-    );
-    setState(() {
-      // print(response.body);
-      final decoded = json.decode(response.body) as Map<String, dynamic>;
-      // print(decoded);
-      data = decoded['status']['message'];
-      print(data);
-    });
-  }
-
   void checkFirstSeen() async {
     prefs = await SharedPreferences.getInstance();
     // _seen = (prefs.getBool('seen') ?? true);
@@ -49,13 +32,23 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   String input = "";
+  List<String> news = ["", "", ""];
   @override
   void initState() {
-    getData();
-    print(data);
+    // TODO: implement initState
+    news[0] =
+        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
+    news[1] =
+        'Supreme Court asks Centre why environment regulator has not been set up';
+    news[2] =
+        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
+    //TODO initialise 3 news statements (only title)
     checkFirstSeen();
     super.initState();
   }
+
+  String newsBody =
+      "The Union Environment Ministry and the Delhi government jointly launched 'Clean Air Campaign' which saw 4,347 violations in a week, officials said on Monday. The officials added that 1,892 violators were fined, leading to a collection of ₹54 crore. The campaign was launched on February 10 to find a permanent solution to pollution in Delhi-NCR.";
 
   Future<void> readValues() async {
     final prefs = await SharedPreferences.getInstance();
@@ -228,8 +221,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Future<void> _showNewsDialog(int index) async {
-    print(index);
+  Future<void> _showNewsDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -256,7 +248,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     Container(
                         child: Text(
-                      data[index]['title'],
+                      "India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World",
                       style: TextStyle(
                           color: Color(0xff3D3D3D),
                           fontSize: 16,
@@ -271,7 +263,7 @@ class _MainScreenState extends State<MainScreen> {
                       height: 100,
                       child: SingleChildScrollView(
                         child: Text(
-                          data[index]['content'],
+                          newsBody,
                           style: TextStyle(
                               color: Color(0xff737373),
                               fontSize: 16,
@@ -536,7 +528,11 @@ class _MainScreenState extends State<MainScreen> {
                                         image: AssetImage(
                                             'images/icon/steps.png')),
                                     onPressed: () {
-                                      //  TODO navigate to step screen
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  StepScreen()));
                                     },
                                   ),
                                 ),
@@ -570,7 +566,11 @@ class _MainScreenState extends State<MainScreen> {
                                         image:
                                             AssetImage('images/icon/cam.png')),
                                     onPressed: () {
-                                      //TODO eco check
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CameraScreen()));
                                     },
                                   ),
                                 ),
@@ -624,7 +624,7 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(0); //TODO news1
+                              _showNewsDialog(); //TODO news1
                             },
                             elevation: 3,
                             padding: EdgeInsets.all(0),
@@ -647,7 +647,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      data[0]['title'],
+                                      news[0],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -667,7 +667,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(1); //TODO news2
+                              _showNewsDialog(); //TODO news2
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -690,7 +690,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      data[1]['title'],
+                                      news[1],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -710,7 +710,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(2); //TODO news3
+                              _showNewsDialog(); //TODO news3
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -733,7 +733,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      data[2]['title'],
+                                      news[2],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',

@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.1
   shared_preferences: ^0.5.6+1
   pedometer: ^2.1.0
+  permission_handler: ^5.0.1+1
+  jiffy: ^4.0.0
   url_launcher: ^5.7.9
   expansion_card: ^0.1.0
   camera: ^0.5.8+2
