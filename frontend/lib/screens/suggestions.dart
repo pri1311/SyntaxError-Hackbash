@@ -2,6 +2,8 @@ import 'package:earthling/constants.dart';
 import 'package:earthling/screens/PMI_suggestions.dart';
 import 'package:earthling/screens/suggestions_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class suggestionsList extends StatefulWidget {
   @override
@@ -9,6 +11,30 @@ class suggestionsList extends StatefulWidget {
 }
 
 class _suggestionsListState extends State<suggestionsList> {
+  var data;
+
+  void getData() async {
+    final url = 'http://10.0.2.2:5000/recyclingCentres';
+    print('something');
+    final response = await http.get(
+      url,
+    );
+    setState(() {
+      // print(response.body);
+      final decoded = json.decode(response.body) as Map<String, dynamic>;
+      // print(decoded);
+      data = decoded['status']['message'];
+      print(data);
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    print(data);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,33 +157,33 @@ class _suggestionsListState extends State<suggestionsList> {
                     Container(
                       padding: const EdgeInsets.all(25.0),
                       child: Container(
-                        height: 250,
+                        height: 325,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
                             recyclingWidgets(
-                              "Sahakari Bhandhar",
-                              "Mumbai",
-                              "www.google.com",
-                              "4.5/5",
+                              data[0]['name'],
+                              data[0]['address'],
+                              data[0]['directions'],
+                              data[0]['rating'],
                             ),
                             recyclingWidgets(
-                              "Sahakari Bhandhar",
-                              "Mumbai",
-                              "www.google.com",
-                              "4.5/5",
+                              data[1]['name'],
+                              data[1]['address'],
+                              data[1]['directions'],
+                              data[1]['rating'],
                             ),
                             recyclingWidgets(
-                              "Sahakari Bhandhar",
-                              "Mumbai",
-                              "www.google.com",
-                              "4.5/5",
+                              data[2]['name'],
+                              data[2]['address'],
+                              data[2]['directions'],
+                              data[2]['rating'],
                             ),
                             recyclingWidgets(
-                              "Sahakari Bhandhar",
-                              "Mumbai",
-                              "www.google.com",
-                              "4.5/5",
+                              data[3]['name'],
+                              data[3]['address'],
+                              data[3]['directions'],
+                              data[3]['rating'],
                             ),
                           ],
                         ),
@@ -182,72 +208,74 @@ class recyclingWidgets extends StatelessWidget {
   recyclingWidgets(this.name, this.address, this.directions, this.rating);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(15),
-      width: 275,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Color(0xFFA5C528),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Text(
-                    name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+    return Expanded(
+      child: Container(
+        margin: EdgeInsets.all(20),
+        padding: EdgeInsets.all(15),
+        width: 275,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Color(0xFFA5C528),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      name,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Text(
-                    rating,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      rating,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Text(
-                    address,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                  Padding(
+                    padding: EdgeInsets.all(4),
+                    child: Text(
+                      address,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
-                ),
-                FlatButton(
-                  onPressed: () => {},
-                  padding: EdgeInsets.all(5.0),
-                  child: Row(
-                    // Replace with a Row for horizontal icon + text
-                    children: <Widget>[
-                      Text("Directions"),
-                      Icon(Icons.arrow_forward),
-                    ],
+                  FlatButton(
+                    onPressed: () => {},
+                    padding: EdgeInsets.all(5.0),
+                    child: Row(
+                      // Replace with a Row for horizontal icon + text
+                      children: <Widget>[
+                        Text("Directions"),
+                        Icon(Icons.arrow_forward),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: SizedBox(),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: SizedBox(),
+            ),
+          ],
+        ),
       ),
     );
   }
