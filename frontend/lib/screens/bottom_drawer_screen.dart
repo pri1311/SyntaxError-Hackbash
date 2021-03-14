@@ -6,7 +6,6 @@ class BottomDrawerScreen extends StatefulWidget {
   static double co2;
   static int stepValue; //TODO get values from step screen
   static int netDeedValue;
-
   @override
   _BottomDrawerScreenState createState() => _BottomDrawerScreenState();
 }
