@@ -9,6 +9,14 @@ import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
+import 'dart:convert';
+import 'package:async/async.dart';
+import 'dart:io';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'analysis_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static int status;
@@ -20,6 +28,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   SharedPreferences prefs;
   bool _seen;
+  String display;
 
   void checkFirstSeen() async {
     prefs = await SharedPreferences.getInstance();
@@ -299,7 +308,110 @@ class _MainScreenState extends State<MainScreen> {
       },
     );
   }
+  Future<void> _choice() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraint) {
+              return AlertDialog(
+                contentPadding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                title: Padding(
+                  padding: EdgeInsets.all(0),
+                  child: Text('Choose Image or Gallery',), //TODO img for news
+                ),
+                content: SingleChildScrollView(
+                  child: Center(
+                    child: ListBody(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 20,
+                        ),
+                        MaterialButton(
+                          height: 40,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xff3D3D3D),
+                          child: Text(
+                            'Camera',
+                            style: TextStyle(
+                                fontSize: constraint.maxHeight * 0.0251,
+                                color: Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CameraScreen()));
+                          },
+                        ),
 
+                        SizedBox(
+                          height: 15,
+                        ),
+                        MaterialButton(
+                          height: 40,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xff3D3D3D),
+                          child: Text(
+                            'Gallery',
+                            style: TextStyle(
+                                fontSize: constraint.maxHeight * 0.0251,
+                                color: Colors.white),
+                          ),
+                          onPressed: () async{
+                            File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+                            sendReq(image);
+                            AnalysisScreen.material = display;
+                            if (AnalysisScreen.check(display) != null)
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AnalysisScreen()));
+                          },
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            });
+      },
+    );
+  }
+  void sendReq(File image) async {
+    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+
+    var length = await image.length();
+
+    var uri = Uri.parse("http://192.168.140.1:5000/predict");
+
+    var request = http.MultipartRequest("POST", uri);
+
+    var multipartFile = http.MultipartFile('file', stream, length,
+        filename: Path.basename(image.path));
+
+    request.files.add(multipartFile);
+
+    var res = await request.send();
+
+    var response = await http.Response.fromStream(res);
+    final decoded = json.decode(response.body) as Map<String, dynamic>;
+    setState(() {
+      display = decoded['class'];
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -566,11 +678,7 @@ class _MainScreenState extends State<MainScreen> {
                                         image:
                                             AssetImage('images/icon/cam.png')),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CameraScreen()));
+                                      _choice();
                                     },
                                   ),
                                 ),
