@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'bottom_drawer_screen.dart';
 import 'package:earthling/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+<<<<<<< HEAD
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 import 'dart:convert';
@@ -17,6 +18,10 @@ import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'analysis_screen.dart';
+=======
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+>>>>>>> fc46251cea14e90d957f5b304e6af4a181c03f13
 
 class MainScreen extends StatefulWidget {
   static int status;
@@ -30,6 +35,23 @@ class _MainScreenState extends State<MainScreen> {
   bool _seen;
   String display;
 
+  var data;
+
+  void getData() async {
+    final url = 'http://10.0.2.2:5000/news';
+    print('something');
+    final response = await http.get(
+      url,
+    );
+    setState(() {
+      // print(response.body);
+      final decoded = json.decode(response.body) as Map<String, dynamic>;
+      // print(decoded);
+      data = decoded['status']['message'];
+      print(data);
+    });
+  }
+
   void checkFirstSeen() async {
     prefs = await SharedPreferences.getInstance();
     // _seen = (prefs.getBool('seen') ?? true);
@@ -41,23 +63,13 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   String input = "";
-  List<String> news = ["", "", ""];
   @override
   void initState() {
-    // TODO: implement initState
-    news[0] =
-        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
-    news[1] =
-        'Supreme Court asks Centre why environment regulator has not been set up';
-    news[2] =
-        'India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World';
-    //TODO initialise 3 news statements (only title)
+    getData();
+    print(data);
     checkFirstSeen();
     super.initState();
   }
-
-  String newsBody =
-      "The Union Environment Ministry and the Delhi government jointly launched 'Clean Air Campaign' which saw 4,347 violations in a week, officials said on Monday. The officials added that 1,892 violators were fined, leading to a collection of ₹54 crore. The campaign was launched on February 10 to find a permanent solution to pollution in Delhi-NCR.";
 
   Future<void> readValues() async {
     final prefs = await SharedPreferences.getInstance();
@@ -230,7 +242,8 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Future<void> _showNewsDialog() async {
+  Future<void> _showNewsDialog(int index) async {
+    print(index);
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -257,7 +270,7 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     Container(
                         child: Text(
-                      "India\'s Dietary Guidelines Have The Lowest Carbon Footprint In The World",
+                      data[index]['title'],
                       style: TextStyle(
                           color: Color(0xff3D3D3D),
                           fontSize: 16,
@@ -272,7 +285,7 @@ class _MainScreenState extends State<MainScreen> {
                       height: 100,
                       child: SingleChildScrollView(
                         child: Text(
-                          newsBody,
+                          data[index]['content'],
                           style: TextStyle(
                               color: Color(0xff737373),
                               fontSize: 16,
@@ -732,7 +745,7 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news1
+                              _showNewsDialog(0); //TODO news1
                             },
                             elevation: 3,
                             padding: EdgeInsets.all(0),
@@ -755,7 +768,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[0],
+                                      data[0]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -775,7 +788,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news2
+                              _showNewsDialog(1); //TODO news2
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -798,7 +811,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[1],
+                                      data[1]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
@@ -818,7 +831,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           MaterialButton(
                             onPressed: () {
-                              _showNewsDialog(); //TODO news3
+                              _showNewsDialog(2); //TODO news3
                             },
                             padding: EdgeInsets.all(0),
                             elevation: 3,
@@ -841,7 +854,7 @@ class _MainScreenState extends State<MainScreen> {
                                     padding: EdgeInsets.fromLTRB(
                                         0, constraints.maxHeight * 0.044, 0, 0),
                                     child: Text(
-                                      news[2],
+                                      data[2]['title'],
                                       softWrap: true,
                                       style: TextStyle(
                                         fontFamily: 'Roboto',
