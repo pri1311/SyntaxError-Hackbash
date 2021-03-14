@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class BottomDrawerScreen extends StatefulWidget {
   static double pmiValue;
   static double co2;
-  static int stepValue;   //TODO get values from step screen
+  static int stepValue; //TODO get values from step screen
   static int netDeedValue;
-
 
   @override
   _BottomDrawerScreenState createState() => _BottomDrawerScreenState();
 }
 
 class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -98,7 +94,8 @@ class _BottomDrawerScreenState extends State<BottomDrawerScreen> {
                       ),
                     ),
                     Wrap(
-                      children: drawBadges(BottomDrawerScreen.netDeedValue, constraints),
+                      children: drawBadges(
+                          BottomDrawerScreen.netDeedValue, constraints),
                     ),
                   ],
                 ),

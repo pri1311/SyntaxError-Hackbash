@@ -11,8 +11,9 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    MainScreen.status = 0;  //0: deedDialogue not viewed, 1: viewed
+    MainScreen.status = 0; //0: deedDialogue not viewed, 1: viewed
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MainScreen(),
     );
   }
